@@ -28,13 +28,15 @@ export default function ClientForm({ client, onSuccess }: { client?: Client, onS
 
     try {
       if (client?.id) {
-        await updateClient(client.id, data);
+        const result = await updateClient(client.id, data);
+        if (result?.error) throw new Error(result.error);
       } else {
-        await createClient(data);
+        const result = await createClient(data);
+        if (result?.error) throw new Error(result.error);
       }
       if (onSuccess) onSuccess();
     } catch (err: any) {
-      setError("Une erreur est survenue lors de l'enregistrement.");
+      setError(err.message || "Une erreur est survenue lors de l'enregistrement.");
     } finally {
       setLoading(false);
     }
