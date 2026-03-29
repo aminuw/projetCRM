@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 const SESSION_COOKIE = 'crm_session';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const session = request.cookies.get(SESSION_COOKIE);
   const isLoginPage = request.nextUrl.pathname === '/login';
 
@@ -14,7 +14,6 @@ export function middleware(request: NextRequest) {
   if (!isAuthenticated && !isLoginPage) {
     const loginUrl = new URL('/login', request.url);
     const response = NextResponse.redirect(loginUrl);
-    // Nettoyer tout cookie invalide
     if (session) {
       response.cookies.delete(SESSION_COOKIE);
     }
@@ -26,7 +25,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  // Ajouter des en-têtes de sécurité sur chaque réponse
+  // Ajouter des en-têtes de sécurité
   const response = NextResponse.next();
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
