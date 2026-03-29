@@ -36,6 +36,9 @@ export default function LoginPage() {
             </span>
           </div>
           <p className="text-brand-gray text-sm">Connectez-vous pour accéder à votre espace de gestion</p>
+          <div className="mt-4 inline-flex items-center gap-2 bg-brand-lightgray/50 text-brand-charcoal text-xs px-3 py-2 rounded-lg border border-brand-gray/20">
+            <span className="text-brand-darkgray font-semibold">💡 Accès recruteur :</span> Les identifiants sont pré-remplis.
+          </div>
         </div>
 
         {/* Card */}
@@ -61,6 +64,7 @@ export default function LoginPage() {
                 required
                 autoComplete="email"
                 autoFocus
+                defaultValue="admin@crm.studio"
                 placeholder="admin@crm.studio"
                 className="w-full px-4 py-2.5 border border-brand-gray/30 rounded-xl focus:border-brand-charcoal focus:ring-2 focus:ring-brand-charcoal/10 transition-all outline-none placeholder:text-brand-gray/40 text-sm"
               />
@@ -76,6 +80,7 @@ export default function LoginPage() {
                 type="password"
                 required
                 autoComplete="current-password"
+                defaultValue="Admin123!"
                 placeholder="••••••••"
                 className="w-full px-4 py-2.5 border border-brand-gray/30 rounded-xl focus:border-brand-charcoal focus:ring-2 focus:ring-brand-charcoal/10 transition-all outline-none placeholder:text-brand-gray/40 text-sm"
               />
