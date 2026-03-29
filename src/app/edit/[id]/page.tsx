@@ -9,25 +9,22 @@ export const revalidate = 0;
 export default async function EditClient({ params }: { params: Promise<{ id: string }> }) {
   const paramsData = await params;
   const clientId = parseInt(paramsData.id);
-  
-  // Simulation de données locales si pas connecté à Supabase
-  let client: Client | null = null;
-  
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
-    const listDemo = [
-      { id: 1, nom: 'Dupont', prenom: 'Jean', mail: 'jean@example.com', ville: 'Paris', risque: 'Faible', type: 'Demo' },
-      { id: 2, nom: 'Martin', prenom: 'Sophie', mail: 'sophie@example.com', ville: 'Lyon', risque: 'Moyen', type: 'Demo' }
-    ] as any;
-    client = listDemo.find((c: any) => c.id === clientId) || null;
-  } else {
-    // Appel Réel
-    const { data, error } = await supabase.from('clients').select('*').eq('id', clientId).single();
-    if (!error && data) client = data as Client;
-  }
 
-  if (!client) {
+  if (isNaN(clientId)) {
     notFound();
   }
+
+  const { data, error } = await supabase
+    .from('clients')
+    .select('*')
+    .eq('id', clientId)
+    .single();
+
+  if (error || !data) {
+    notFound();
+  }
+
+  const client = data as Client;
 
   return (
     <div className="max-w-3xl mx-auto py-12 px-6">

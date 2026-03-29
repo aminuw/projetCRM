@@ -1,23 +1,17 @@
 import { getClients } from '@/app/actions/clientActions';
-import { Client } from '@/types/client';
 import Link from 'next/link';
 
-export const revalidate = 0; // Dynamic rendering
+export const revalidate = 0;
 
 export default async function Home() {
   const clients = await getClients();
-
-  const displayClients: Client[] = clients.length > 0 ? clients : [
-    { id: 1, nom: 'Dupont', prenom: 'Jean', mail: 'jean@example.com', ville: 'Paris', risque: 'Faible', type: 'Demo' } as any,
-    { id: 2, nom: 'Martin', prenom: 'Sophie', mail: 'sophie@example.com', ville: 'Lyon', risque: 'Moyen', type: 'Demo' } as any
-  ];
 
   return (
     <div className="max-w-7xl mx-auto py-12 px-6">
       <div className="flex justify-between items-end mb-10">
         <div>
           <h1 className="text-4xl font-light text-brand-charcoal tracking-tight">Liste des <span className="font-semibold">Clients</span></h1>
-          <p className="text-brand-gray mt-2 text-sm">Gérez l'ensemble de vos contacts et leur niveau de risque en toute simplicité.</p>
+          <p className="text-brand-gray mt-2 text-sm">Gérez l&apos;ensemble de vos contacts et leur niveau de risque en toute simplicité.</p>
         </div>
         <Link 
           href="/nouveau" 
@@ -39,11 +33,10 @@ export default async function Home() {
             </tr>
           </thead>
           <tbody className="divide-y divide-brand-gray/10">
-            {displayClients.map((client) => (
+            {clients.map((client) => (
               <tr key={client.id} className="hover:bg-brand-lightgray/30 transition-colors group">
                 <td className="py-4 px-6">
                   <div className="font-medium text-brand-charcoal">{client.nom} {client.prenom}</div>
-                  {client.id <= 2 && (client as any).type === 'Demo' && <span className="text-[10px] bg-brand-lightgray text-brand-darkgray px-2 py-0.5 rounded-full mt-1 inline-block">Mode Démo</span>}
                 </td>
                 <td className="py-4 px-6">
                   <div className="text-sm text-brand-charcoal">{client.mail || <span className="text-brand-gray italic">Non renseigné</span>}</div>
@@ -70,10 +63,16 @@ export default async function Home() {
               </tr>
             ))}
             
-            {displayClients.length === 0 && (
+            {clients.length === 0 && (
               <tr>
-                <td colSpan={5} className="py-12 text-center text-brand-gray">
-                  Aucun client trouvé. Commencez par en ajouter un !
+                <td colSpan={5} className="py-16 text-center">
+                  <div className="text-brand-gray">
+                    <svg className="w-12 h-12 mx-auto mb-4 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <p className="font-medium text-brand-darkgray mb-1">Aucun client enregistré</p>
+                    <p className="text-sm">Commencez par ajouter votre premier contact.</p>
+                  </div>
                 </td>
               </tr>
             )}
